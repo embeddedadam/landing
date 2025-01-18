@@ -41,6 +41,12 @@
     --chart-4: 43 74% 66%;
     --chart-5: 27 87% 67%;
     --radius: 0.5rem;
+    --font-sans: "Geist Sans", system-ui, -apple-system, sans-serif;
+    --font-mono: "Geist Mono", monospace;
+
+    /* Article content widths */
+    --content-width: 65ch;
+    --wide-content-width: 80ch;
   }
   .dark {
     --background: 0 0% 3.9%;
@@ -82,5 +88,16 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+
+  article {
+    font-family: var(--font-sans);
+    line-height: 1.75;
+    font-feature-settings: "kern", "liga", "calt";
+  }
+
+  article pre,
+  article code {
+    font-family: var(--font-mono);
   }
 }

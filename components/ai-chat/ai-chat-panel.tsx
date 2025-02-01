@@ -84,7 +84,7 @@ export function AIChatPanel() {
             className={cn(
               "flex",
               message.role === "user" ? "justify-end" : "justify-start",
-              "w-full"
+              "w-full",
             )}
           >
             <div

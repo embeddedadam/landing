@@ -174,7 +174,7 @@ export function FloatingPanelContent({
               ref={contentRef}
               variants={{
                 hidden: { opacity: 0, y: 20 },
-                visible: { opacity: 1, y: 0 }
+                visible: { opacity: 1, y: 0 },
               }}
               initial="hidden"
               animate="visible"
@@ -190,7 +190,7 @@ export function FloatingPanelContent({
                 "shadow-lg shadow-black/[0.08] dark:shadow-black/[0.15]",
                 "will-change-transform",
                 "transform-gpu",
-                className
+                className,
               )}
               transition={{
                 type: "spring",

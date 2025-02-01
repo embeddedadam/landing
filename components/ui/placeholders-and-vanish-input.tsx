@@ -248,7 +248,7 @@ export function PlaceholdersAndVanishInput({
           "dark:bg-zinc-900 dark:disabled:bg-zinc-800",
           "transition duration-200",
           "flex items-center justify-center",
-          "mr-0.5"
+          "mr-0.5",
         )}
       >
         <motion.svg
@@ -311,7 +311,7 @@ export function PlaceholdersAndVanishInput({
                 "pr-12 sm:pr-14",
                 "text-left",
                 "w-[calc(100%-3rem)]",
-                "truncate"
+                "truncate",
               )}
             >
               {placeholders[currentPlaceholder]}

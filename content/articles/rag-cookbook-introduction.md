@@ -27,8 +27,8 @@ All relevant code for each article—along with the explanations—will be conta
 This is part of the RAG Cookbook series:
 
 1. **[Introduction to RAG (This Article)](${process.env.NEXT_PUBLIC_DOMAIN_URL}/articles/rag-cookbook)**
-2. **RAG validation (RAGProbe)**
-3. **Retrieve and rerank RAG**
+2. **[Retrieve and rerank RAG](${process.env.NEXT_PUBLIC_DOMAIN_URL}/articles/rag-cookbook-retrieve-and-rerank-rag)**
+3. **RAG validation (RAGProbe)**
 4. **Hybrid RAG**
 5. **Graph RAG**
 6. **Multi-modal RAG**

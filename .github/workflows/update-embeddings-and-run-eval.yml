@@ -1,0 +1,58 @@
+name: Update Article Embeddings and Run Evaluation
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - content/articles/**
+
+permissions:
+  contents: read
+
+env:
+  PINECONE_API_KEY: ${{ secrets.PINECONE_API_KEY }}
+  PINECONE_INDEX_NAME: ${{ secrets.PINECONE_INDEX_NAME }}
+  OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+
+jobs:
+  update-embeddings-and-run-evaluation:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Update embeddings
+        id: update-embeddings
+        run: npm run update-embeddings
+        continue-on-error: true
+
+      - name: Generate questions
+        id: generate-questions
+        run: |
+          mkdir -p evaluation
+          npm run generate-questions:all
+          npm run combine-questions
+
+      - name: Run RAG evaluation
+        if: steps.generate-questions.outcome == 'success'
+        run: npm run evaluate-rag
+
+      - name: Upload evaluation report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: rag-evaluation-report
+          path: |
+            rag-evaluation-report.json
+            evaluation/questions.json

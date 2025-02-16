@@ -17,10 +17,8 @@ async function rerankDocuments(
   query: string,
   documents: Document[],
 ): Promise<RankedDocument[]> {
-  console.log("\n[RERANK] Starting reranking for query:", query);
-
   const llm = new ChatOpenAI({
-    modelName: "gpt-4-turbo-preview",
+    modelName: "gpt-4o-mini",
     temperature: 0,
   });
 
@@ -57,19 +55,10 @@ async function rerankDocuments(
     score: scores[i] || 0,
   }));
 
-  const sortedDocs = rerankedDocs.sort((a, b) => b.score - a.score);
-
-  console.log("\n[RERANK] Reranking scores:");
-  sortedDocs.forEach((doc, i) => {
-    console.log(`Document ${i + 1} score: ${doc.score}`);
-  });
-
-  return sortedDocs;
+  return rerankedDocs.sort((a, b) => b.score - a.score);
 }
 
 async function getRelevantDocs(query: string) {
-  console.log("\n[RETRIEVAL] Query:", query);
-
   const pinecone = new Pinecone({
     apiKey: process.env.PINECONE_API_KEY!,
   });
@@ -101,17 +90,7 @@ async function getRelevantDocs(query: string) {
   );
 
   const rerankedDocs = await rerankDocuments(query, documents);
-
-  const topDocs = rerankedDocs.slice(0, 3);
-
-  console.log("\n[RETRIEVAL] Top reranked documents:");
-  topDocs.forEach((doc, i) => {
-    console.log(`\nDocument ${i + 1}:`);
-    console.log(`Content: ${doc.pageContent.slice(0, 150)}...`);
-    console.log(`Score: ${doc.score}`);
-  });
-
-  return topDocs;
+  return rerankedDocs.slice(0, 3);
 }
 
 const CONTEXT_PROMPT = PromptTemplate.fromTemplate(`
@@ -133,13 +112,12 @@ Instructions:
 export async function chatAction(messages: Message[]) {
   try {
     const conversationHistory = messages
-      .slice(-4) // Keep last 4 messages for context
+      .slice(-4)
       .map((msg) => `${msg.role}: ${msg.content}`)
       .join("\n");
 
     const lastMessage = messages[messages.length - 1];
 
-    // Augment query with conversation context
     const augmentedQuery = `
       Previous messages:
       ${conversationHistory}
@@ -156,7 +134,7 @@ export async function chatAction(messages: Message[]) {
         question: (input) => input.question,
       },
       CONTEXT_PROMPT,
-      new ChatOpenAI({ modelName: "gpt-4-turbo-preview", temperature: 0 }),
+      new ChatOpenAI({ modelName: "gpt-4o-mini", temperature: 0 }),
       new StringOutputParser(),
     ]);
 

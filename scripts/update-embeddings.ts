@@ -70,9 +70,20 @@ async function initPinecone() {
 async function cleanDatabase(index: any) {
   console.log("Cleaning existing vectors...");
   try {
+    const stats = await index.describeIndexStats();
+
+    if (stats.totalRecordCount === 0) {
+      console.log("Index is empty, skipping cleanup");
+      return;
+    }
+
     await index.deleteAll();
     console.log("Successfully cleaned the database");
-  } catch (error) {
+  } catch (error: any) {
+    if (error?.message?.includes("404")) {
+      console.log("Index is empty, skipping cleanup");
+      return;
+    }
     console.error("Error cleaning database:", error);
     throw error;
   }

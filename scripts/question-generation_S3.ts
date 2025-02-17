@@ -64,8 +64,8 @@ ${chunk}
 
   // Clean the response by removing markdown code blocks
   const cleanedOutput = output
-    .replace(/```json\n/g, '')
-    .replace(/```\n?/g, '')
+    .replace(/```json\n/g, "")
+    .replace(/```\n?/g, "")
     .trim();
 
   try {

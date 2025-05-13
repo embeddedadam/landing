@@ -4,6 +4,7 @@ import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Navigation } from "@/components/layout/navigation";
 import { AIChatPanel } from "@/components/ai-chat/ai-chat-panel";
+import { Analytics } from "@vercel/analytics/next"
 
 const geistSans = Geist({
   variable: "--font-geist-mono",
@@ -48,6 +49,7 @@ export default function RootLayout({
           {children}
           <AIChatPanel />
         </ThemeProvider>
+        <Analytics />
       </body>
     </html>
   );
